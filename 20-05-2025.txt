@@ -1,0 +1,89 @@
+create database shop;
+use shop;
+
+create table category (
+cat_id int primary key,
+cat varchar(100),
+info varchar(100)
+);
+insert into category values
+(1, 'furniture', 'Wood Based Products'),
+(2, 'electronics', 'Home Appliances'),
+(3, 'agriculture', 'Farm Products'),
+(4, 'agriculture dummy', 'Farm Products Dummy');
+
+create table products (
+product_id int primary key,
+product_name varchar(100),
+price int,
+cat_id int,
+foreign key (cat_id) references category(cat_id)
+);
+insert into products values
+(101, 'Chair', 300, 1),
+(102, 'Smartphone', 1000, 2),
+(103, 'Table', 750, 1),
+(104, 'Seeds', 200, 3),
+(105, 'Keyboard', 300, 2);
+
+delete from category where cat_id=1;
+delete from category where cat_id=4;
+
+select * from products;
+
+create database shop_other;
+use shop_other;
+
+create table category (
+cat_id int primary key,
+cat varchar(100),
+info varchar(100)
+);
+insert into category values
+(1, 'furniture', 'Wood Based Products'),
+(2, 'electronics', 'Home Appliances'),
+(3, 'agriculture', 'Farm Products'),
+(4, 'agriculture dummy', 'Farm Products Dummy');
+
+create table products (
+product_id int primary key,
+product_name varchar(100),
+price int,
+cat_id int,
+foreign key (cat_id) references category(cat_id) on delete cascade,
+foreign key (cat_id) references category(cat_id) on update cascade
+);
+insert into products values
+(101, 'Chair', 300, 1),
+(102, 'Smartphone', 1000, 2),
+(103, 'Table', 750, 1),
+(104, 'Seeds', 200, 3),
+(105, 'Keyboard', 300, 2);
+
+delete from category where cat_id=1;
+delete from category where cat_id=4;
+
+select * from products;
+
+update category set cat_id=1 where cat_id=2;
+
+select * from category;
+
+alter table category add unique (cat);
+desc category;
+alter table category drop index cat;
+
+create table sample(dept_id int, name varchar(20));
+
+alter table sample add primary key (dept_id);
+desc sample;
+alter table sample drop primary key;
+
+create table departments(dept_id int primary key,dept_name varchar(50));
+
+alter table sample add constraint fk_sample_dept foreign key (dept_id) references departments(dept_id);
+alter table sample drop foreign key fk_sample_dept;
+
+alter table sample add constraint chk_name_length check (char_length(name) >= 3);
+
+alter table departments modify column dept_name varchar(50) default 'General';
