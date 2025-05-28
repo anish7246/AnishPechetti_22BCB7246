@@ -1,0 +1,72 @@
+DBConnection.java
+
+package connection;
+import java.sql.*;
+public class DBConnection {
+	public static void main(String[] args) {
+		System.out.println("Hi there!");
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/anish_vit","root","data@vivobook");
+			System.out.println(con);
+			Statement stmt=con.createStatement();
+			ResultSet rs=stmt.executeQuery("select * from student");
+			while(rs.next())
+				System.out.println(rs.getInt(1)+ " " + rs.getString(2)+" "+rs.getInt(3));
+			con.close();
+		}
+		catch(Exception e) {
+			System.out.println("Connection Error");
+		}
+	}
+}
+
+----------
+
+DB_Connection.java
+
+package crud;
+import java.sql.*;
+public class DB_Connection {
+	public Connection get_connection() {
+		Connection connection=null;
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/anish_vit","root","data@vivobook");
+		}
+		catch(Exception e) {
+			System.out.println(e);
+		}
+		return connection;
+	}
+}
+
+----------
+
+crud_operations.java
+
+package crud;
+import java.sql.*;
+public class crud_operations {
+	public static void main(String[] args) {
+		crud_operations objTest=new crud_operations();
+		objTest.create_data("12", "sam", 85);
+		objTest.create_data("11", "karthick", 75);
+	}
+	public void create_data(String id,String name,int marks){
+		DB_Connection obj_DB_Connection=new DB_Connection();
+		Connection connection=obj_DB_Connection.get_connection();
+		PreparedStatement ps=null;
+		try {
+			String query="insert into student values (?,?,?)";
+			ps=connection.prepareStatement(query);
+			ps.setString(1, id);
+			ps.setString(2, name);
+			ps.setInt(3, marks);
+			System.out.println(ps);
+			ps.executeUpdate();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+}
