@@ -1,0 +1,205 @@
+deleteOne.java
+
+package connection;
+
+import org.bson.Document;
+
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+
+public class deleteOne {
+	public static void main(String[] args) {
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase database = mongoClient.getDatabase("operators");
+
+        MongoCollection<Document> collection = database.getCollection("sales");
+
+        collection.deleteOne(Filters.eq("item","Cappuccino"));
+;
+        System.out.println("Document Deleted.");
+    }
+}
+
+----------
+
+deleteMany.java
+
+package connection;
+
+import org.bson.Document;
+
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+
+public class deleteMany {
+	public static void main(String[] args) {
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase database = mongoClient.getDatabase("operators");
+
+        MongoCollection<Document> collection = database.getCollection("sales");
+
+        collection.deleteMany(Filters.eq("item","Cappuccino"));
+;
+        System.out.println("Document Deleted.");
+    }
+}
+
+----------
+
+limitFind.java
+
+package connection;
+
+import org.bson.Document;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+public class limitFind {
+    public static void main(String[] args) {
+    	
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase database = mongoClient.getDatabase("operators");
+
+        MongoCollection<Document> collection = database.getCollection("sales");
+
+        FindIterable<Document> allDocuments = collection.find().limit(2);
+
+        for (Document document : allDocuments) {
+            System.out.println(document);
+        }
+    }
+}
+
+----------
+
+skipFind.java
+
+package connection;
+
+import org.bson.Document;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+public class skipFind {
+    public static void main(String[] args) {
+    	
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase database = mongoClient.getDatabase("operators");
+
+        MongoCollection<Document> collection = database.getCollection("sales");
+
+        FindIterable<Document> allDocuments = collection.find().skip(1).limit(2);
+
+        for (Document document : allDocuments) {
+            System.out.println(document);
+        }
+    }
+}
+
+----------
+
+constraintFind.java
+
+package connection;
+
+import org.bson.Document;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+public class constraintFind {
+    public static void main(String[] args) {
+    	
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase database = mongoClient.getDatabase("operators");
+
+        MongoCollection<Document> collection = database.getCollection("sales");
+
+        FindIterable<Document> allDocuments = collection.find();
+
+        for (Document document : allDocuments) {
+            int n = (int) document.get("_id");
+            if (n % 2 == 0) {
+                System.out.println(document);
+            }
+        }
+    }
+}
+
+----------
+
+ascending.java
+
+package connection;
+
+import org.bson.Document;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+public class ascending {
+    public static void main(String[] args) {
+    	
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase database = mongoClient.getDatabase("myDb");
+
+        MongoCollection<Document> collection = database.getCollection("sampleCollection");
+        System.out.println("Ascending Order");
+        FindIterable<Document> allDocuments = collection.find().sort(new BasicDBObject("First_Name", 1));
+
+        for (Document document : allDocuments) {
+                System.out.println(document);
+        }
+    }
+}
+
+----------
+
+descending.java
+
+package connection;
+
+import org.bson.Document;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+public class descending {
+    public static void main(String[] args) {
+    	
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase database = mongoClient.getDatabase("myDb");
+
+        MongoCollection<Document> collection = database.getCollection("sampleCollection");
+        System.out.println("Descending Order");
+        FindIterable<Document> allDocuments = collection.find().sort(new BasicDBObject("First_Name", -1));
+
+        for (Document document : allDocuments) {
+                System.out.println(document);
+        }
+    }
+}
