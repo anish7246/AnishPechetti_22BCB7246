@@ -1,0 +1,63 @@
+show databases;
+create database test_db;
+show tables from test_db;
+drop database test_db;
+
+use testdb;
+create table cse(id int, name varchar(50), marks int);
+select * from cse;
+insert into cse values(10,'Anish',91);
+
+show databases;
+create database studentdb;
+use studentdb;
+
+create table mathstudents (
+    id int,
+    name varchar(100),
+    marks int,
+    preferred_branch varchar(50)
+);
+
+insert into mathstudents values
+(1, 'Alice', 90, 'Algebra'),
+(2, 'Bob', 85, 'Geometry'),
+(3, 'Charlie', 78, 'Calculus'),
+(4, 'David', 92, 'Statistics'),
+(5, 'Eva', 88, 'Number Theory');
+
+create table sciencestudents (
+    id int,
+    name varchar(100),
+    marks int,
+    lab_score int
+);
+
+insert into sciencestudents values
+(1, 'Alice', 88, 90),
+(2, 'Bob', 82, 87),
+(3, 'Charlie', 79, 85),
+(4, 'David', 93, 95),
+(5, 'Eva', 87, 89);
+
+create table englishstudents (
+    id int,
+    name varchar(100),
+    marks int,
+    essay_title varchar(255)
+);
+
+insert into englishstudents values
+(1, 'Alice', 85, 'The Power of Words'),
+(2, 'Bob', 80, 'Journey Through Time'),
+(3, 'Charlie', 77, 'The Lost Kingdom'),
+(4, 'David', 90, 'Echoes of Silence'),
+(5, 'Eva', 86, 'Dreams and Reality');
+
+desc englishstudent;
+
+alter table englishstudents add(home_add varchar(100));
+alter table englishstudents drop column marks;
+alter table englishstudents add(country varchar(100) default 'India');
+update englishstudent set marks=99 where id=4;
+update englishstudent set marks=marks+5 where id=2;

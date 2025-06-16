@@ -1,0 +1,323 @@
+MongoDB.java
+
+package connection;
+
+import com.mongodb.MongoClient;
+import com.mongodb.MongoCredential;
+import com.mongodb.client.MongoDatabase;
+
+public class MongoDB {
+
+	public static void main(String[] args) {
+		try {
+            MongoClient db
+                = new MongoClient("localhost", 27017);
+
+            MongoCredential credential;
+            credential
+                = MongoCredential
+                      .createCredential(
+                          "GFGUser", "mongoDb",
+                          "password".toCharArray());
+            System.out.println(
+                "Successfully Connected"
+                + " to the database");
+
+            MongoDatabase database
+                = db.getDatabase("mongoDb");
+            System.out.println("Credentials are: "
+                               + credential);
+        }
+        catch (Exception e) {
+            System.out.println(
+                "Connection establishment failed");
+            System.out.println(e);
+        }
+
+	}
+
+}
+
+----------
+
+MongoDBConnection.java
+
+package connection;
+import org.bson.Document;
+
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
+
+public class MongoDBConnection {
+   public static void main(String[] args) {
+      MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+      
+      MongoDatabase database = mongoClient.getDatabase("test");
+      database.createCollection("employeeRecord");
+      
+      MongoCollection<Document> collection = database.getCollection("sampleCollection");
+      Document document = new Document("title", "MongoDB");
+      
+      collection.insertOne(document);
+      
+      MongoIterable<String> loop1 = mongoClient.listDatabaseNames();
+      for (String name : loop1) {
+         System.out.println(name);
+      }
+      
+   }
+}
+
+----------
+
+createCollection.java
+
+package connection;
+import org.bson.Document;
+
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
+
+public class createCollection {
+   public static void main(String[] args) {
+      MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+      
+      MongoDatabase database = mongoClient.getDatabase("connection");
+      database.createCollection("NewCollection");
+      System.out.println("Collection Created");
+      }
+      
+   }
+
+----------
+
+dropCollection.java
+
+package connection;
+
+import org.bson.Document;
+
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+public class dropCollection {
+	 public static void main(String[] args) {
+	      MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+	      
+	      MongoDatabase database = mongoClient.getDatabase("connection");
+	      
+	      MongoCollection<Document> collection = database.getCollection("NewCollection");
+	      collection.drop();
+	      System.out.println("Collection Dropped");
+	      }
+
+}
+
+---------
+
+showCollection.java
+
+package connection;
+import org.bson.Document;
+
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
+
+public class showCollections {
+   public static void main(String[] args) {
+      MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+      
+      MongoDatabase database = mongoClient.getDatabase("test");
+      database.createCollection("employeeRecord");
+      
+      MongoIterable<String> collection = database.listCollectionNames();
+     
+      for (String name : collection) {
+         System.out.println(name);
+      }
+      
+   }
+}
+
+----------
+
+insertDocument.java
+
+package connection;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bson.Document;
+
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+public class insertDocument {
+   public static void main(String[] args) {
+
+      MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+      MongoDatabase database = mongoClient.getDatabase("myDb");
+
+      // Get the collection
+      MongoCollection<Document> collection = database.getCollection("sampleCollection");
+
+      Document document = new Document("First_Name", "Mahesh")
+         .append("Last_Name", "Parashar")
+         .append("Date_Of_Birth", "1990-08-21")
+         .append("e_mail", "mahesh_parashar.123@gmail.com")
+         .append("phone", "9034343345");
+
+      collection.insertOne(document);
+      List<Document> documents = new ArrayList<>();
+
+      documents.add(new Document("First_Name", "Radhika")
+         .append("Last_Name", "Sharma")
+         .append("Date_Of_Birth", "1995-09-26")
+         .append("e_mail", "radhika_sharma.123@gmail.com")
+         .append("phone", "9000012345"));
+
+      documents.add(new Document("First_Name", "Rachel")
+         .append("Last_Name", "Christopher")
+         .append("Date_Of_Birth", "1990-02-16")
+         .append("e_mail", "Rachel_Christopher.123@gmail.com")
+         .append("phone", "9000054321"));
+
+      documents.add(new Document("First_Name", "Fathima")
+         .append("Last_Name", "Sheik")
+         .append("Date_Of_Birth", "1990-02-16")
+         .append("e_mail", "Fathima_Sheik.123@gmail.com")
+         .append("phone", "9000054321"));
+
+      collection.insertMany(documents);
+
+      System.out.println("Documents inserted.");
+   }
+}
+
+----------
+
+retriveDocument.java
+
+package connection;
+import java.nio.file.DirectoryStream.Filter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.bson.Document;
+
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+
+public class retriveDocument {
+   public static void main(String[] args) {
+
+      MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+      MongoDatabase database = mongoClient.getDatabase("myDb");
+
+      MongoCollection<Document> collection = database.getCollection("sampleCollection");
+      
+      FindIterable<Document> allDocuments = collection.find();
+      for (Document document : allDocuments) {
+          System.out.println(document);
+       }
+      System.out.println("*****Documents Selected*****");
+      FindIterable<Document> documents = collection.find(Filters.eq("First_Name", "Mahesh"));
+      for (Document document : documents) {
+          System.out.println(document);
+       }
+   }
+}
+
+----------
+
+updateOneUserDoc.java
+
+package connection;
+
+import org.bson.Document;
+
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+
+public class updateOneUserDoc {
+	public static void main(String[] args) {
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase database = mongoClient.getDatabase("myDb");
+
+        MongoCollection<Document> collection = database.getCollection("sampleCollection");
+
+        collection.updateOne(
+            Filters.eq("First_Name", "Mahesh"),
+            Updates.set("e_mail", "maheshparashar@gmail.com")
+        );
+        System.out.println("Document Updated.");
+        System.out.println("***Updated Document***");
+
+        FindIterable<Document> documents = collection.find(Filters.eq("First_Name", "Mahesh"));
+
+        for (Document document : documents) {
+            System.out.println(document);
+        }
+    }
+}
+
+----------
+
+updateManyUserDoc.java
+
+package connection;
+
+import org.bson.Document;
+
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+
+public class updateManyUserDoc {
+	public static void main(String[] args) {
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase database = mongoClient.getDatabase("myDb");
+
+        MongoCollection<Document> collection = database.getCollection("sampleCollection");
+
+	    collection.updateMany(Filters.eq("First_Name","Mahesh"),
+	    		Updates.combine(
+	    				Updates.set("e_mail", "maheshparashar@gmail.com"),
+	    				Updates.set("Last_Name", "Ramesh")));
+        System.out.println("Document Updated.");
+        System.out.println("***Updated Document***");
+
+        FindIterable<Document> documents = collection.find(Filters.eq("First_Name", "Mahesh"));
+
+        for (Document document : documents) {
+            System.out.println(document);
+        }
+    }
+}

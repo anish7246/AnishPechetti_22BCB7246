@@ -1,0 +1,88 @@
+show databases;
+
+drop database testdb;
+ 
+use studentdb;
+show tables from studentdb;
+drop table englishstudents;
+desc mathstudents;
+alter table mathstudents drop column preferred_branch;
+
+create table englishstudents (
+    id int,
+    name varchar(100),
+    marks int,
+    essay_title varchar(255)
+);
+insert into englishstudents values
+(1, 'Alice', 85, 'The Power of Words'),
+(2, 'Bob', 80, 'Journey Through Time'),
+(3, 'Charlie', 77, 'The Lost Kingdom'),
+(4, 'David', 90, 'Echoes of Silence'),
+(5, 'Eva', 86, 'Dreams and Reality');
+select * from englishstudents;
+delete from englishstudents where marks=90;
+select * from englishstudents;
+delete from englishstudents;
+
+insert into englishstudents values
+(1, 'Alice', 85, 'The Power of Words'),
+(2, 'Bob', 80, 'Journey Through Time'),
+(3, 'Charlie', 77, 'The Lost Kingdom'),
+(4, 'David', 90, 'Echoes of Silence'),
+(5, 'Eva', 86, 'Dreams and Reality');
+select * from englishstudents;
+truncate table englishstudents;
+select * from englishstudents;
+
+create database vit19may;
+use vit19may;
+create table test_vit(id int, name varchar(50));
+start transaction;
+insert into test_vit values(1, 'Alice');
+savepoint a1;
+insert into test_vit values(2, 'Anish');
+savepoint a2;
+delete from test_vit where id=2;
+select * from test_vit;
+rollback to a2;
+select * from test_vit;
+commit;
+rollback to a2;
+
+select * from test_vit;
+select id from test_vit;
+select name from test_vit;
+desc test_vit;
+select name as student_name from test_vit;
+desc test_vit;
+
+create database companydb;
+use companydb;
+create table workers (
+    worker_id int,
+    name varchar(100),
+    department varchar(50),
+    position varchar(50),
+    salary int);
+insert into workers values
+(1, 'Alice Johnson', 'HR', 'Manager', 65000.00),
+(2, 'Bob Smith', 'Engineering', 'Software Engineer', 80000.00),
+(3, 'Charlie Lee', 'Marketing', 'Coordinator', 52000.00),
+(4, 'David Brown', 'Engineering', 'DevOps Engineer', 78000.00),
+(5, 'Eva Green', 'Finance', 'Analyst', 60000.00);
+
+select * from workers;
+select name from workers where salary >= 60000;
+select name, worker_id from workers where salary < 60000;
+select name, position from workers where salary >= 60000;
+select name from workers where salary = 65000;
+
+select name from workers where salary > 60000 and department = 'HR';
+select * from workers where salary > 50000 and (department = 'HR' or department = 'Finance');
+select * from workers where salary > 30000 and salary < 70000 and (department = 'Finance' or department = 'Marketing');
+
+select * from workers where position in ('Analyst', 'Coordinator');
+select * from workers where department not in ('HR', 'Finance');
+
+select max(salary) as salary from workers where mod(worker_id, 2) = 0 and department in ('HR', 'Finance');
